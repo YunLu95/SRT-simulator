@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package srt.simulator;
+//package srt.simulator;
 
 /**
  *
@@ -21,23 +21,113 @@ public class Srt {
 
     StringBuilder AQ;
 
+
     public Srt(String dividend, String divisor) {
         this.dividend = new StringBuilder(dividend);
         this.divisor = new StringBuilder(divisor);
 
-        normB = normalize(divisor);
-        System.out.println("Normalized B " + normB.toString());
-        negNormB = negativeOfB(normB);
-        n = normB.length() - 2;
-        maxLeftShifts = n+1;
-        numLeftShifts = 0;
-        adjustAQ();
-        System.out.println("adjust AQ " + AQ.toString());
-        shiftOverZeros();
-        System.out.println("shiftOverZeros AQ " + AQ.toString());
-        addB(negNormB);
-        System.out.println("subtractB AQ " + AQ.toString());
+        //call hextodec
+        StringBuilder sdividend =  this.dividend;
+        StringBuilder sdivisor =  this.divisor;
+
+        System.out.println("\nYou entered dividend string "+sdividend+", divisor string:"+sdivisor);
+        char HexDividendtoDec[] = new char[100] ;
+        char HexDivisortoDec[] = new char[100] ;
+
+        sdividend.getChars(0, sdividend.length(), HexDividendtoDec, 0 );
+        sdivisor.getChars(0, sdivisor.length(), HexDivisortoDec, 0 );
+        System.out.print("Dividend's Equivalent Binary value is : ");
+        HexToBin(HexDividendtoDec);
+        System.out.print("\nDivisor's Equivalent Binary value is : ");
+        HexToBin(HexDivisortoDec);
+        System.out.print("\n");
+
+
+//        normB = normalize(divisor);
+//        System.out.println("Normalized B " + normB.toString());
+//        negNormB = negativeOfB(normB);
+//        n = normB.length() - 2;
+//        maxLeftShifts = n+1;
+//        numLeftShifts = 0;
+//        adjustAQ();
+//        System.out.println("adjust AQ " + AQ.toString());
+//        shiftOverZeros();
+//        System.out.println("shiftOverZeros AQ " + AQ.toString());
+//        addB(negNormB);
+//        System.out.println("subtractB AQ " + AQ.toString());
         //loop
+    }
+
+
+    static void HexToBin(char hexdec[])
+    {
+        int i = 0;
+
+        while (hexdec[i] != '\u0000') {
+
+            switch (hexdec[i]) {
+                case '.':
+                    System.out.print(".");
+                    break;
+                case '0':
+                    System.out.print("0000");
+                    break;
+                case '1':
+                    System.out.print("0001");
+                    break;
+                case '2':
+                    System.out.print("0010");
+                    break;
+                case '3':
+                    System.out.print("0011");
+                    break;
+                case '4':
+                    System.out.print("0100");
+                    break;
+                case '5':
+                    System.out.print("0101");
+                    break;
+                case '6':
+                    System.out.print("0110");
+                    break;
+                case '7':
+                    System.out.print("0111");
+                    break;
+                case '8':
+                    System.out.print("1000");
+                    break;
+                case '9':
+                    System.out.print("1001");
+                    break;
+                case 'A':
+                case 'a':
+                    System.out.print("1010");
+                    break;
+                case 'B':
+                case 'b':
+                    System.out.print("1011");
+                    break;
+                case 'C':
+                case 'c':
+                    System.out.print("1100");
+                    break;
+                case 'D':
+                case 'd':
+                    System.out.print("1101");
+                    break;
+                case 'E':
+                case 'e':
+                    System.out.print("1110");
+                    break;
+                case 'F':
+                case 'f':
+                    System.out.print("1111");
+                    break;
+                default:
+                    System.out.print("\nInvalid hexadecimal digit " + hexdec[i]);
+            }
+            i++;
+        }
     }
 
     StringBuilder normalize(String num) {
