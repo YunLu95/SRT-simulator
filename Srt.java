@@ -28,10 +28,14 @@ public class Srt {
 
         //call hextobin
         System.out.println("You entered dividend string: "+sdividend+", divisor string:"+sdivisor);
-        System.out.print("Dividend's Equivalent Binary value is : "+HexToBin(sdividend)+"\n");
-        System.out.print("Divisor's Equivalent Binary value is : "+HexToBin(sdivisor)+"\n");
+        StringBuilder binDividend= HexToBin(sdividend);
+        StringBuilder binDivisor= HexToBin(sdivisor);
 
-//        normB = normalize(divisor);
+        System.out.print("Dividend's Equivalent Binary value is : "+binDividend+"\n");
+        System.out.print("Divisor's Equivalent Binary value is : "+binDivisor+"\n");
+
+        normB = normalize(binDividend);
+        System.out.print("Normalized Dividend: "+normB+"\n");
 //        System.out.println("Normalized B " + normB.toString());
 //        negNormB = negativeOfB(normB);
 //        n = normB.length() - 2;
@@ -134,11 +138,11 @@ public class Srt {
         return binSB;
     }
 
-    StringBuilder normalize(String num) {
-        StringBuilder norm = new StringBuilder(divisor);
+    StringBuilder normalize(StringBuilder norm) {
+//        StringBuilder norm = new StringBuilder(divisor);
         while (norm.length() >= 2) {
-            if (norm.charAt(2) == '0') {
-                norm.deleteCharAt(2);
+            if (norm.charAt(1) == '0') {
+                norm.deleteCharAt(1);
                 norm.append('0');
                 shift++;
             } else {
