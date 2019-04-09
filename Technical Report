@@ -1,0 +1,23 @@
+Technical Report
+
+    Project "SRT-simulator" is done by Yun Lu, Thejanie Hettiarachchi.
+    Using Github for collaboration.
+
+    SRT-simulator:
+
+        Main.java:
+            Main function to take in test data using Srt class(see Srt.java).
+
+        Srt.java:
+            A java class takes in two parameters: String dividend, String divisor.
+            The dividend and divisor in string format will be first converted into
+            stringbuilder and passed into function HexToBin.
+                HexToBin function takes in stringbuilder. First, check if the input is in binary format (user can choose to
+                input number in binary format by adding "(binary)" after the number). If if's binary then it return the
+                binary value to binSB and get rid of the postfix at the same time. If it's in hex format then
+                it will convert it into binary and return to the binSB.
+            After conversion, function normalize is called for normalize the dividend.
+            After previous steps, go through the loop for the repeating sequences:
+
+
+
