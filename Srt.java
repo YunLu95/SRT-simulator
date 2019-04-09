@@ -15,57 +15,64 @@ public class Srt {
     StringBuilder divisor;
     StringBuilder dividend;
     StringBuilder normB, negNormB;
-    int AQshift =0;
+    int AQshift = 0;
     int maxLeftShifts;
     int numLeftShifts;
 
     StringBuilder AQ;
-
 
     public Srt(String dividend, String divisor) {
         StringBuilder sdividend = new StringBuilder(dividend);
         StringBuilder sdivisor = new StringBuilder(divisor);
 
         //call hextobin
-        System.out.println("You entered dividend string: "+sdividend+", divisor string:"+sdivisor);
-        StringBuilder binDividend= HexToBin(sdividend);
-        StringBuilder binDivisor= HexToBin(sdivisor);
+        System.out.println("You entered dividend string: " + sdividend + ", divisor string:" + sdivisor);
+        StringBuilder binDividend = HexToBin(sdividend);
+        StringBuilder binDivisor = HexToBin(sdivisor);
 
-        System.out.print("Dividend's Equivalent Binary value is : "+binDividend+"\n");
-        System.out.print("Divisor's Equivalent Binary value is : "+binDivisor+"\n");
+        System.out.print("Dividend's Equivalent Binary value is : " + binDividend + "\n");
+        System.out.print("Divisor's Equivalent Binary value is : " + binDivisor + "\n");
 
-        normB = normalize(binDividend);
-        System.out.print("Normalized Dividend: "+normB+"\n");
+        normB = normalize(binDivisor);
+        System.out.print("Normalized Dividend: " + normB + "\n");
 
         negNormB = negativeOfB(normB);
         n = normB.length() - 2;
-        maxLeftShifts = n+1;
+        maxLeftShifts = n + 1;
         numLeftShifts = 0;
-        this.dividend=binDividend;
-        this.divisor=binDivisor;
+        this.dividend = binDividend;
+        this.divisor = binDivisor;
         adjustAQ();
         System.out.println("adjust AQ " + AQ.toString());
         shiftOverZeros();
-        System.out.println("shiftOverZeros AQ " + AQ.toString());
-        addB(negNormB);
-        System.out.println("subtractB AQ " + AQ.toString());
+        //System.out.println("shiftOverZeros AQ " + AQ.toString());
 
         //loop
-//        while(numLeftShifts <= n+1){
-//
-//        }
+        while (numLeftShifts < maxLeftShifts) {
+            addB(negNormB);
+            System.out.println("Subtract B " + negNormB.toString());
+            if (AQ.charAt(0) == '0') {
+                System.out.println("Pos result " + AQ.toString());
+                positive();
+            } else {
+                System.out.println("Neg result " + AQ.toString());
+                negative();
+            }
+        }
 
+        remainder();
         System.out.println("\n");
     }
 
-    StringBuilder binInput(StringBuilder stringBuilder){
+    StringBuilder binInput(StringBuilder stringBuilder) {
         int i = stringBuilder.indexOf("(");
-        String binString= stringBuilder.substring(0,i);
-        StringBuilder binSB= new StringBuilder(binString);
-        binSB.insert(0,"0");
+        String binString = stringBuilder.substring(0, i);
+        StringBuilder binSB = new StringBuilder(binString);
+        binSB.insert(0, "0");
         return binSB;
     }
-    boolean contains(StringBuilder sb, String findString){
+
+    boolean contains(StringBuilder sb, String findString) {
 
         /*
          * if the substring is found, position of the match is
@@ -73,15 +80,14 @@ public class Srt {
          */
         return sb.indexOf(findString) > -1;
     }
-    StringBuilder HexToBin(StringBuilder hexSB)
-    {
-        if(contains(hexSB,"(binary)")){
+
+    StringBuilder HexToBin(StringBuilder hexSB) {
+        if (contains(hexSB, "(binary)")) {
             return binInput(hexSB);
-        }
-        else {
+        } else {
             int i = 0;
             StringBuilder binSB = new StringBuilder();
-            for(i = 0;i < hexSB.length(); i ++) {
+            for (i = 0; i < hexSB.length(); i++) {
                 switch (hexSB.charAt(i)) {
                     case '.':
                         binSB.append(".");
@@ -105,48 +111,48 @@ public class Srt {
                         binSB.append("0101");
                         break;
                     case '6':
-                    binSB.append("0110");
-                    break;
-                case '7':
-                    binSB.append("0111");
-                    break;
-                case '8':
-                    binSB.append("1000");
-                    break;
-                case '9':
-                    binSB.append("1001");
-                    break;
-                case 'A':
-                case 'a':
-                    binSB.append("1010");
-                    break;
-                case 'B':
-                case 'b':
-                    binSB.append("1011");
-                    break;
-                case 'C':
-                case 'c':
-                    binSB.append("1100");
-                    break;
-                case 'D':
-                case 'd':
-                    binSB.append("1101");
-                    break;
-                case 'E':
-                case 'e':
-                    binSB.append("1110");
-                    break;
-                case 'F':
-                case 'f':
-                    binSB.append("1111");
-                    break;
-                default:
-                    System.out.print("\nInvalid hexadecimal digit " + hexSB.charAt(i));
+                        binSB.append("0110");
+                        break;
+                    case '7':
+                        binSB.append("0111");
+                        break;
+                    case '8':
+                        binSB.append("1000");
+                        break;
+                    case '9':
+                        binSB.append("1001");
+                        break;
+                    case 'A':
+                    case 'a':
+                        binSB.append("1010");
+                        break;
+                    case 'B':
+                    case 'b':
+                        binSB.append("1011");
+                        break;
+                    case 'C':
+                    case 'c':
+                        binSB.append("1100");
+                        break;
+                    case 'D':
+                    case 'd':
+                        binSB.append("1101");
+                        break;
+                    case 'E':
+                    case 'e':
+                        binSB.append("1110");
+                        break;
+                    case 'F':
+                    case 'f':
+                        binSB.append("1111");
+                        break;
+                    default:
+                        System.out.print("\nInvalid hexadecimal digit " + hexSB.charAt(i));
 
+                }
             }
-        }
-        binSB.insert(0,"0");
-        return binSB;
+            binSB.insert(0, "0");
+            return binSB;
         }
     }
 
@@ -204,36 +210,77 @@ public class Srt {
     }
 
     void shiftOverZeros() {
-        while (AQ.charAt(2) == '0' && (maxLeftShifts - numLeftShifts)>0) {
+        while (AQ.charAt(2) == '0' && (maxLeftShifts - numLeftShifts) > 0) {
             AQ.deleteCharAt(2);
             AQ.append('0');
             numLeftShifts++;
         }
+        System.out.println("Shift Over Zeros " + AQ.toString());
     }
 
     void shiftOverOnes() {
-        while (AQ.charAt(2) == '1'&& (maxLeftShifts - numLeftShifts)>0) {
+        while (AQ.charAt(2) == '1' && (maxLeftShifts - numLeftShifts) > 0) {
             AQ.deleteCharAt(2);
             AQ.append('1');
             numLeftShifts++;
         }
+        System.out.println("Shift Over Ones " + AQ.toString());
+
     }
 
     void negative() {
+        if (numLeftShifts >= maxLeftShifts) {
+            return;
+        }
         AQ.deleteCharAt(2);
         AQ.append('0');
+        System.out.println("ShL, q0=0 " + AQ.toString());
         numLeftShifts++;
         shiftOverOnes();
+        if (numLeftShifts >= maxLeftShifts) {
+            return;
+        }
         addB(normB);
-        
+        System.out.println("Add B" + normB);
+
+        if (AQ.charAt(0) == '0') { //positive
+            System.out.println("Pos result " + AQ.toString());
+            AQ.deleteCharAt(2);
+            AQ.append('1');
+            System.out.println("ShL, q0=1 " + AQ.toString());
+            numLeftShifts++;
+            return;
+        } else { //negative
+            System.out.println("Neg result " + AQ.toString());
+            negative();
+        }
+//        if(numLeftShifts >= maxLeftShifts){
+//            return;
+//        }
+//        AQ.deleteCharAt(2);
+//        AQ.append('0');
+//        System.out.println("ShL, q0=0 " + AQ.toString());
+//        numLeftShifts++;
+
         //if(AQ.charAt(0) == '0')
     }
 
     void positive() {
+        if (numLeftShifts >= maxLeftShifts) {
+            return;
+        }
         AQ.deleteCharAt(2);
         AQ.append('1');
         numLeftShifts++;
+        System.out.println("ShL, q0=1 " + AQ.toString());
         shiftOverZeros();
+    }
+
+    void remainder() {
+        if (AQ.charAt(0) == '1' && AQ.charAt(2) == '1') {
+            AQ.insert(2, '1');
+            addB(normB);
+        }
     }
 
     void addB(StringBuilder b) {
@@ -248,7 +295,9 @@ public class Srt {
                     temp++;
                 }
                 temp += carry;
-
+                if (AQ.charAt(i) == '*') {
+                    temp = -1;
+                }
                 switch (temp) {
                     case (0):
                         AQ.setCharAt(i, '0');
@@ -264,6 +313,10 @@ public class Srt {
                     case (3):
                         AQ.setCharAt(i, '1');
                         carry = 1;
+                        break;
+                    case (-1):
+                        AQ.setCharAt(i, '*');
+                        carry = 0;
                         break;
                 }
             }
