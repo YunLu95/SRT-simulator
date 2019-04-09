@@ -17,7 +17,316 @@ Technical Report
                 binary value to binSB and get rid of the postfix at the same time. If it's in hex format then
                 it will convert it into binary and return to the binSB.
             After conversion, function normalize is called for normalize the dividend.
-            After previous steps, go through the loop for the repeating sequences:
+            After previous steps, go through the while loop for the repeating sequences:
+                1. Subtract Divisor from Dividend, by using addB function with divisor's 2's complement.
+                2. Check the sign bit of the result.
+                    1. if it's positive, call the positive function(see positive);
+                    2. if it's negative, call the negative function(see negative);
+            Break out of the loop when the shifts number of Dividend is equal to divisor's length+1.
+            Correct remainder if the last step's result id negative and there wasn't enough shifts to shift over 1s.
+            Output of the quotient and remainder.
 
+
+
+        Positive:
+            The function will check the number of shifts first;
+            Shift dividend to left and insert 1 to q0;
+            Shift over 0's by calling the shiftOverZeros() function.
+
+        Negative:
+            The function will check the number of shifts first;
+            Shift dividend to left and insert 0 to q0;
+            Shift over 1's by calling the shiftOverOnes() function;
+            Add divisor to dividend and check the sign bit:
+                1. if it's positive, call the positive function(see positive);
+                2. if it's negative, call the negative function(see negative);
+
+    Result:
+        Below is the output from our project with the test data:
+
+        You entered dividend string: .de, divisor string:.e
+        Dividend's Equivalent Binary value is : 0.11011110
+        Divisor's Equivalent Binary value is : 0.1110
+        Normalized Dividend: 0.1110
+        2s complement 1.0010
+        adjust AQ 0.11011110
+        Shift Over Zeros 0.11011110
+        Subtract B 1.0010
+        Neg result 1.11111110
+        ShL, q0=0 1.11111100
+        Shift Over Ones 1.11001111
+        Q = 0.1111
+        R = 0.00001100
+
+
+
+        You entered dividend string: .19, divisor string:.5
+        Dividend's Equivalent Binary value is : 0.00011001
+        Divisor's Equivalent Binary value is : 0.0101
+        Normalized Dividend: 0.1010
+        2s complement 1.0110
+        adjust AQ 0.0011001*
+        Shift Over Zeros 0.11001*00
+        Subtract B 1.0110
+        Pos result 0.00101*00
+        ShL, q0=1 0.0101*001
+        Shift Over Zeros 0.101*0010
+        Subtract B 1.0110
+        Pos result 0.000*0010
+        ShL, q0=1 0.00*00101
+        Shift Over Zeros 0.00*00101
+        Q = 0.0101
+        R = 0.00000000
+
+
+
+        You entered dividend string: .cd, divisor string:.a
+        Dividend's Equivalent Binary value is : 0.11001101
+        Divisor's Equivalent Binary value is : 0.1010
+        Normalized Dividend: 0.1010
+        2s complement 1.0110
+        adjust AQ 0.11001101
+        Shift Over Zeros 0.11001101
+        Subtract B 1.0110
+        Pos result 0.00101101
+        ShL, q0=1 0.01011011
+        Shift Over Zeros 0.10110110
+        Subtract B 1.0110
+        Pos result 0.00010110
+        ShL, q0=1 0.00101101
+        Shift Over Zeros 0.10110100
+        Q = 0.0100
+        R = 0.00000101
+
+
+
+        You entered dividend string: .156, divisor string:.101110(binary)
+        Dividend's Equivalent Binary value is : 0.000101010110
+        Divisor's Equivalent Binary value is : 0.101110
+        Normalized Dividend: 0.101110
+        2s complement 1.010010
+        adjust AQ 0.000101010110
+        Shift Over Zeros 0.101010110000
+        Subtract B 1.010010
+        Neg result 1.111100110000
+        ShL, q0=0 1.111001100000
+        Shift Over Ones 1.001100000111
+        Q = 0.000111
+        R = 0.000000000110
+
+
+
+        You entered dividend string: .232, divisor string:.011111(binary)
+        Dividend's Equivalent Binary value is : 0.001000110010
+        Divisor's Equivalent Binary value is : 0.011111
+        Normalized Dividend: 0.111110
+        2s complement 1.000010
+        adjust AQ 0.01000110010*
+        Shift Over Zeros 0.1000110010*0
+        Subtract B 1.000010
+        Neg result 1.1001010010*0
+        ShL, q0=0 1.001010010*00
+        Shift Over Ones 1.001010010*00
+        Add B0.111110
+        Pos result 0.001000010*00
+        ShL, q0=1 0.01000010*001
+        Subtract B 1.000010
+        Neg result 1.01001010*001
+        ShL, q0=0 1.1001010*0010
+        Shift Over Ones 1.001010*00101
+        Add B0.111110
+        Pos result 0.001000*00101
+        ShL, q0=1 0.01000*001011
+        Subtract B 1.000010
+        Neg result 1.01001*001011
+        ShL, q0=0 1.1001*0010110
+        Shift Over Ones 1.1001*0010110
+        Q = 0.010110
+        R = 0.000000011000
+
+
+
+        You entered dividend string: .1111, divisor string:.22
+        Dividend's Equivalent Binary value is : 0.0001000100010001
+        Divisor's Equivalent Binary value is : 0.00100010
+        Normalized Dividend: 0.10001000
+        2s complement 1.01111000
+        adjust AQ 0.01000100010001**
+        Shift Over Zeros 0.1000100010001**0
+        Subtract B 1.01111000
+        Pos result 0.0000000010001**0
+        ShL, q0=1 0.000000010001**01
+        Shift Over Zeros 0.10001**010000000
+        Q = 0.10000000
+        R = 0.0000000000010001
+
+
+
+        You entered dividend string: .3333, divisor string:.11
+        Dividend's Equivalent Binary value is : 0.0011001100110011
+        Divisor's Equivalent Binary value is : 0.00010001
+        Normalized Dividend: 0.10001000
+        2s complement 1.01111000
+        adjust AQ 0.1001100110011***
+        Shift Over Zeros 0.1001100110011***
+        Subtract B 1.01111000
+        Pos result 0.0001000110011***
+        ShL, q0=1 0.001000110011***1
+        Shift Over Zeros 0.1000110011***100
+        Subtract B 1.01111000
+        Pos result 0.0000010011***100
+        ShL, q0=1 0.000010011***1001
+        Shift Over Zeros 0.10011***10010000
+        Subtract B 1.01111000
+        Pos result 0.00010***10010000
+        ShL, q0=1 0.0010***100100001
+        Shift Over Zeros 0.0010***100100001
+        Q = 0.00100001
+        R = 0.0000000000000010
+
+
+
+        You entered dividend string: .5AC2, divisor string:.79
+        Dividend's Equivalent Binary value is : 0.0101101011000010
+        Divisor's Equivalent Binary value is : 0.01111001
+        Normalized Dividend: 0.11110010
+        2s complement 1.00001110
+        adjust AQ 0.101101011000010*
+        Shift Over Zeros 0.101101011000010*
+        Subtract B 1.00001110
+        Neg result 1.110000111000010*
+        ShL, q0=0 1.10000111000010*0
+        Shift Over Ones 1.0000111000010*01
+        Add B0.11110010
+        Pos result 0.0000000000010*01
+        ShL, q0=1 0.000000000010*011
+        Subtract B 1.00001110
+        Neg result 1.000011100010*011
+        ShL, q0=0 1.00011100010*0110
+        Shift Over Ones 1.00011100010*0110
+        Add B0.11110010
+        Pos result 0.00001110010*0110
+        ShL, q0=1 0.0001110010*01101
+        Subtract B 1.00001110
+        Neg result 1.0010101010*01101
+        ShL, q0=0 1.010101010*011010
+        Shift Over Ones 1.010101010*011010
+        Add B0.11110010
+        Pos result 0.010001110*011010
+        ShL, q0=1 0.10001110*0110101
+        Subtract B 1.00001110
+        Neg result 1.10011100*0110101
+        ShL, q0=0 1.0011100*01101010
+        Shift Over Ones 1.0011100*01101010
+        Add B0.11110010
+        Pos result 0.0010101*01101010
+        ShL, q0=1 0.010101*011010101
+        Q = 0.11010101
+        R = 0.0000000000010101
+
+
+
+        You entered dividend string: .9CDE11, divisor string:.abc
+        Dividend's Equivalent Binary value is : 0.100111001101111000010001
+        Divisor's Equivalent Binary value is : 0.101010111100
+        Normalized Dividend: 0.101010111100
+        2s complement 1.010101000100
+        adjust AQ 0.100111001101111000010001
+        Shift Over Zeros 0.100111001101111000010001
+        Subtract B 1.010101000100
+        Neg result 1.111100010001111000010001
+        ShL, q0=0 1.111000100011110000100010
+        Shift Over Ones 1.000100011110000100010111
+        Add B0.101010111100
+        Neg result 1.101111011010000100010111
+        ShL, q0=0 1.011110110100001000101110
+        Shift Over Ones 1.011110110100001000101110
+        Add B0.101010111100
+        Pos result 0.001001110000001000101110
+        ShL, q0=1 0.010011100000010001011101
+        Subtract B 1.010101000100
+        Neg result 1.101000100100010001011101
+        ShL, q0=0 1.010001001000100010111010
+        Shift Over Ones 1.010001001000100010111010
+        Add B0.101010111100
+        Neg result 1.111100000100100010111010
+        ShL, q0=0 1.111000001001000101110100
+        Shift Over Ones 1.000001001000101110100111
+        Add B0.101010111100
+        Neg result 1.101100000100101110100111
+        ShL, q0=0 1.011000001001011101001110
+        Shift Over Ones 1.011000001001011101001110
+        Add B0.101010111100
+        Pos result 0.000011000101011101001110
+        ShL, q0=1 0.000110001010111010011101
+        Q = 0.111010011101
+        R = 0.000000000000000011000101
+
+
+
+        You entered dividend string: .672300, divisor string:.def
+        Dividend's Equivalent Binary value is : 0.011001110010001100000000
+        Divisor's Equivalent Binary value is : 0.110111101111
+        Normalized Dividend: 0.110111101111
+        2s complement 1.001000010001
+        adjust AQ 0.011001110010001100000000
+        Shift Over Zeros 0.110011100100011000000000
+        Subtract B 1.001000010001
+        Neg result 1.111011110101011000000000
+        ShL, q0=0 1.110111101010110000000000
+        Shift Over Ones 1.011110101011000000000011
+        Add B0.110111101111
+        Pos result 0.010110011010000000000011
+        ShL, q0=1 0.101100110100000000000111
+        Subtract B 1.001000010001
+        Neg result 1.110101000101000000000111
+        ShL, q0=0 1.101010001010000000001110
+        Shift Over Ones 1.010100010100000000011101
+        Add B0.110111101111
+        Pos result 0.001100000011000000011101
+        ShL, q0=1 0.011000000110000000111011
+        Subtract B 1.001000010001
+        Neg result 1.100000010111000000111011
+        ShL, q0=0 1.000000101110000001110110
+        Shift Over Ones 1.000000101110000001110110
+        Add B0.110111101111
+        Neg result 1.111000011101000001110110
+        ShL, q0=0 1.110000111010000011101100
+        Shift Over Ones 1.000011101000001110110011
+        Add B0.110111101111
+        Neg result 1.111011010111001110110011
+        ShL, q0=0 1.110110101110011101100110
+        Shift Over Ones 1.110110101110011101100110
+        Q = 0.011101100110
+        R = 0.000000000000110011000110
+
+
+
+        You entered dividend string: .ABCDEF, divisor string:.987
+        Dividend's Equivalent Binary value is : 0.101010111100110111101111
+        Divisor's Equivalent Binary value is : 0.100110000111
+        Normalized Dividend: 0.100110000111
+        2s complement 1.011001111001
+        adjust AQ 0.101010111100110111101111
+        Shift Over Zeros 0.101010111100110111101111
+        Subtract B 1.011001111001
+        Pos result 0.000100110101110111101111
+        ShL, q0=1 0.001001101011101111011111
+        Shift Over Zeros 0.100110101110111101111100
+        Subtract B 1.011001111001
+        Pos result 0.000000100111111101111100
+        ShL, q0=1 0.000001001111111011111001
+        Shift Over Zeros 0.100111111101111100100000
+        Subtract B 1.011001111001
+        Pos result 0.000001110110111100100000
+        ShL, q0=1 0.000011101101111001000001
+        Shift Over Zeros 0.011101101111001000001000
+        Q = 0.001000001000
+        R = 0.000000000000001110110111
+
+
+
+
+        Process finished with exit code 0
 
 
