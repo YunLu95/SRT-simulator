@@ -51,42 +51,60 @@ public class Srt {
         System.out.println("subtractB AQ " + AQ.toString());
 
         //loop
-        while(numLeftShifts <= n+1){
-
-        }
+//        while(numLeftShifts <= n+1){
+//
+//        }
 
         System.out.println("\n");
     }
 
+    StringBuilder binInput(StringBuilder stringBuilder){
+        int i = stringBuilder.indexOf("(");
+        String binString= stringBuilder.substring(0,i);
+        StringBuilder binSB= new StringBuilder(binString);
+        binSB.insert(0,"0");
+        return binSB;
+    }
+    boolean contains(StringBuilder sb, String findString){
 
+        /*
+         * if the substring is found, position of the match is
+         * returned which is >=0, if not -1 is returned
+         */
+        return sb.indexOf(findString) > -1;
+    }
     StringBuilder HexToBin(StringBuilder hexSB)
     {
-        int i = 0;
-        StringBuilder binSB = new StringBuilder();
-        for(i = 0;i < hexSB.length(); i ++) {
-            switch (hexSB.charAt(i)) {
-                case '.':
-                    binSB.append(".");
-                    break;
-                case '0':
-                    binSB.append("0000");
-                    break;
-                case '1':
-                    binSB.append("0001");
-                    break;
-                case '2':
-                    binSB.append("0010");
-                    break;
-                case '3':
-                    binSB.append("0011");
-                    break;
-                case '4':
-                    binSB.append("0100");
-                    break;
-                case '5':
-                    binSB.append("0101");
-                    break;
-                case '6':
+        if(contains(hexSB,"(binary)")){
+            return binInput(hexSB);
+        }
+        else {
+            int i = 0;
+            StringBuilder binSB = new StringBuilder();
+            for(i = 0;i < hexSB.length(); i ++) {
+                switch (hexSB.charAt(i)) {
+                    case '.':
+                        binSB.append(".");
+                        break;
+                    case '0':
+                        binSB.append("0000");
+                        break;
+                    case '1':
+                        binSB.append("0001");
+                        break;
+                    case '2':
+                        binSB.append("0010");
+                        break;
+                    case '3':
+                        binSB.append("0011");
+                        break;
+                    case '4':
+                        binSB.append("0100");
+                        break;
+                    case '5':
+                        binSB.append("0101");
+                        break;
+                    case '6':
                     binSB.append("0110");
                     break;
                 case '7':
@@ -124,10 +142,12 @@ public class Srt {
                     break;
                 default:
                     System.out.print("\nInvalid hexadecimal digit " + hexSB.charAt(i));
+
             }
         }
         binSB.insert(0,"0");
         return binSB;
+        }
     }
 
     StringBuilder normalize(StringBuilder norm) {
