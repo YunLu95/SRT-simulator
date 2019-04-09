@@ -15,7 +15,7 @@ public class Srt {
     StringBuilder divisor;
     StringBuilder dividend;
     StringBuilder normB, negNormB;
-    int shift = 0;
+    int AQshift =0;
     int maxLeftShifts;
     int numLeftShifts;
 
@@ -51,6 +51,10 @@ public class Srt {
         System.out.println("subtractB AQ " + AQ.toString());
 
         //loop
+        while(numLeftShifts <= n+1){
+
+        }
+
         System.out.println("\n");
     }
 
@@ -132,7 +136,7 @@ public class Srt {
             if (norm.charAt(2) == '0') {
                 norm.deleteCharAt(2);
                 norm.append('0');
-                shift++;
+                AQshift++;
             } else {
                 return norm;
             }
@@ -173,7 +177,7 @@ public class Srt {
                 AQ.append('0');
             }
         }
-        for (int i = 0; i < shift; i++) {
+        for (int i = 0; i < AQshift; i++) {
             AQ.deleteCharAt(2);
             AQ.append('*');
         }
