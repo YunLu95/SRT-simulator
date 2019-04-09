@@ -59,8 +59,10 @@ public class Srt {
                 negative();
             }
         }
-
-        remainder();
+        String q = getQuotient();
+        String r = getRemainder();
+        
+        System.out.println("Q = " +q+ "\nR = " +r+ "\n");
         System.out.println("\n");
     }
 
@@ -276,11 +278,33 @@ public class Srt {
         shiftOverZeros();
     }
 
-    void remainder() {
+    String getQuotient(){
+        StringBuilder quotient = new StringBuilder();
+        quotient.append("0.");
+        String q = AQ.substring(n+2);
+        quotient.append(q);
+        return quotient.toString();
+    }
+    
+    String getRemainder() {
+        int remPosition;
+        StringBuilder remainder = new StringBuilder();
         if (AQ.charAt(0) == '1' && AQ.charAt(2) == '1') {
             AQ.insert(2, '1');
             addB(normB);
+            remPosition = AQshift+numLeftShifts-1; //num +1 (-1 for right shift)
         }
+        else{
+            remPosition = AQshift+numLeftShifts ; //num +1 (-1 for right shift)
+        }
+        String rem = AQ.substring(2, 2*n-remPosition +2);
+        
+        remainder.append("0.");
+        for (int i=0; i < remPosition; i++) {
+            remainder.append('0');
+        }
+        remainder.append(rem);
+        return remainder.toString();
     }
 
     void addB(StringBuilder b) {
