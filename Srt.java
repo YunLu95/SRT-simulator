@@ -18,10 +18,13 @@ public class Srt {
     int AQshift = 0;
     int maxLeftShifts;
     int numLeftShifts;
+    int exTime;
+    int addTemp = 0; //TODO remove
 
     StringBuilder AQ;
 
     public Srt(String dividend, String divisor) {
+        exTime = 0;
         StringBuilder sdividend = new StringBuilder(dividend);
         StringBuilder sdivisor = new StringBuilder(divisor);
 
@@ -59,11 +62,17 @@ public class Srt {
                 negative();
             }
         }
+        int tempTime = exTime;
         String q = getQuotient();
         String r = getRemainder();
         
         System.out.println("Q = " +q+ "\nR = " +r+ "\n");
+        System.out.println( "n = " +n+ "\tExecution time = " +exTime+ "\n");
+        System.out.println( "numLeftShifts = " +numLeftShifts+ "\taddTemp = " +addTemp+ "\ttempTime = " + tempTime);
+        System.out.println( "shift = " +numLeftShifts*3+ "\taddTemp = " +addTemp*(Math.ceil(n/4)-1)*2+10+ "\n");
+        
         System.out.println("\n");
+        
     }
 
     StringBuilder binInput(StringBuilder stringBuilder) {
@@ -165,6 +174,7 @@ public class Srt {
                 norm.deleteCharAt(2);
                 norm.append('0');
                 AQshift++;
+                exTime += 3;
             } else {
                 return norm;
             }
@@ -193,6 +203,7 @@ public class Srt {
             }
         }
         //System.out.println("2s complement"+ neg.toString());
+        exTime += n;
         return neg;
     }
 
@@ -208,6 +219,7 @@ public class Srt {
         for (int i = 0; i < AQshift; i++) {
             AQ.deleteCharAt(2);
             AQ.append('*');
+            exTime += 3;
         }
     }
 
@@ -216,6 +228,8 @@ public class Srt {
             AQ.deleteCharAt(2);
             AQ.append('0');
             numLeftShifts++;
+            exTime += 3;
+            
         }
         System.out.println("Shift Over Zeros " + AQ.toString());
     }
@@ -225,6 +239,7 @@ public class Srt {
             AQ.deleteCharAt(2);
             AQ.append('1');
             numLeftShifts++;
+            exTime += 3;
         }
         System.out.println("Shift Over Ones " + AQ.toString());
 
@@ -238,6 +253,7 @@ public class Srt {
         AQ.append('0');
         System.out.println("ShL, q0=0 " + AQ.toString());
         numLeftShifts++;
+        exTime += 3;
         shiftOverOnes();
         if (numLeftShifts >= maxLeftShifts) {
             return;
@@ -251,6 +267,7 @@ public class Srt {
             AQ.append('1');
             System.out.println("ShL, q0=1 " + AQ.toString());
             numLeftShifts++;
+            exTime += 3;
             return;
         } else { //negative
             System.out.println("Neg result " + AQ.toString());
@@ -274,6 +291,7 @@ public class Srt {
         AQ.deleteCharAt(2);
         AQ.append('1');
         numLeftShifts++;
+        exTime += 3;
         System.out.println("ShL, q0=1 " + AQ.toString());
         shiftOverZeros();
     }
@@ -291,7 +309,10 @@ public class Srt {
         StringBuilder remainder = new StringBuilder();
         if (AQ.charAt(0) == '1' && AQ.charAt(2) == '1') {
             AQ.insert(2, '1');
+            System.out.println("ShR " + AQ.substring(0, n+2));
             addB(normB);
+            System.out.println("Add B" + normB);
+            System.out.println("A " + AQ.substring(0, n+2));
             remPosition = AQshift+numLeftShifts-1; //num +1 (-1 for right shift)
         }
         else{
@@ -308,8 +329,17 @@ public class Srt {
     }
 
     void addB(StringBuilder b) {
+        addTemp++; // TODO
         int carry = 0;
         for (int i = n + 1; i >= 0; i--) {
+            if((n-i)%4 == 0){
+                if (i == n){
+                    exTime += 10; //1st FA
+                }
+                else{
+                    exTime += 2; //Time for MUX
+                }
+            }
             int temp = 0;
             if (AQ.charAt(i) != '.') {
                 if (AQ.charAt(i) == '1') {
