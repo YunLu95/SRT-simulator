@@ -55,8 +55,13 @@ Technical Report
         Neg result 1.11111110
         ShL, q0=0 1.11111100
         Shift Over Ones 1.11001111
+        ShR 1.1110
+        Add B0.1110
+        A 0.1100
         Q = 0.1111
         R = 0.00001100
+
+        n = 4	Execution time = 39
 
 
 
@@ -78,6 +83,8 @@ Technical Report
         Q = 0.0101
         R = 0.00000000
 
+        n = 4	Execution time = 45
+
 
 
         You entered dividend string: .cd, divisor string:.a
@@ -98,6 +105,8 @@ Technical Report
         Q = 0.0100
         R = 0.00000101
 
+        n = 4	Execution time = 39
+
 
 
         You entered dividend string: .156, divisor string:.101110(binary)
@@ -113,6 +122,8 @@ Technical Report
         Shift Over Ones 1.001100000111
         Q = 0.000111
         R = 0.000000000110
+
+        n = 6	Execution time = 33
 
 
 
@@ -141,8 +152,13 @@ Technical Report
         Neg result 1.01001*001011
         ShL, q0=0 1.1001*0010110
         Shift Over Ones 1.1001*0010110
+        ShR 1.11001*
+        Add B0.111110
+        A 0.11000*
         Q = 0.010110
         R = 0.000000011000
+
+        n = 6	Execution time = 99
 
 
 
@@ -159,6 +175,8 @@ Technical Report
         Shift Over Zeros 0.10001**010000000
         Q = 0.10000000
         R = 0.0000000000010001
+
+        n = 8	Execution time = 53
 
 
 
@@ -183,6 +201,8 @@ Technical Report
         Shift Over Zeros 0.0010***100100001
         Q = 0.00100001
         R = 0.0000000000000010
+
+        n = 8	Execution time = 87
 
 
 
@@ -224,6 +244,8 @@ Technical Report
         Q = 0.11010101
         R = 0.0000000000010101
 
+        n = 8	Execution time = 145
+
 
 
         You entered dividend string: .9CDE11, divisor string:.abc
@@ -262,6 +284,8 @@ Technical Report
         Q = 0.111010011101
         R = 0.000000000000000011000101
 
+        n = 12	Execution time = 151
+
 
 
         You entered dividend string: .672300, divisor string:.def
@@ -297,8 +321,13 @@ Technical Report
         Neg result 1.111011010111001110110011
         ShL, q0=0 1.110110101110011101100110
         Shift Over Ones 1.110110101110011101100110
+        ShR 1.111011010111
+        Add B0.110111101111
+        A 0.110011000110
         Q = 0.011101100110
         R = 0.000000000000110011000110
+
+        n = 12	Execution time = 167
 
 
 
@@ -324,9 +353,12 @@ Technical Report
         Q = 0.001000001000
         R = 0.000000000000001110110111
 
+        n = 12	Execution time = 87
+
 
 
 
         Process finished with exit code 0
+
 
 

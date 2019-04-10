@@ -19,7 +19,7 @@ public class Srt {
     int maxLeftShifts;
     int numLeftShifts;
     int exTime;
-    int addTemp = 0; //TODO remove
+
 
     StringBuilder AQ;
 
@@ -62,15 +62,11 @@ public class Srt {
                 negative();
             }
         }
-        int tempTime = exTime;
         String q = getQuotient();
         String r = getRemainder();
         
         System.out.println("Q = " +q+ "\nR = " +r+ "\n");
         System.out.println( "n = " +n+ "\tExecution time = " +exTime+ "\n");
-        System.out.println( "numLeftShifts = " +numLeftShifts+ "\taddTemp = " +addTemp+ "\ttempTime = " + tempTime);
-        System.out.println( "shift = " +numLeftShifts*3+ "\taddTemp = " +addTemp*(Math.ceil(n/4)-1)*2+10+ "\n");
-        
         System.out.println("\n");
         
     }
@@ -329,7 +325,7 @@ public class Srt {
     }
 
     void addB(StringBuilder b) {
-        addTemp++; // TODO
+
         int carry = 0;
         for (int i = n + 1; i >= 0; i--) {
             if((n-i)%4 == 0){
