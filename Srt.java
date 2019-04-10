@@ -11,14 +11,15 @@
  */
 public class Srt {
 
-    int n;
+    int n; //size of divisor
     StringBuilder divisor;
     StringBuilder dividend;
-    StringBuilder normB, negNormB;
-    int AQshift = 0;
+    StringBuilder normB; //Normalized divisor
+    StringBuilder negNormB; //2s compliment of normalized divisor
+    int AQshift = 0; //No. of shifts needed to adjust AQ
     int maxLeftShifts;
-    int numLeftShifts;
-    int exTime;
+    int numLeftShifts; //No. of left shifts
+    int exTime; //execution time
 
 
     StringBuilder AQ;
@@ -36,19 +37,19 @@ public class Srt {
         System.out.print("Dividend's Equivalent Binary value is : " + binDividend + "\n");
         System.out.print("Divisor's Equivalent Binary value is : " + binDivisor + "\n");
 
-        normB = normalize(binDivisor);
-        System.out.print("Normalized Dividend: " + normB + "\n");
+        normB = normalize(binDivisor); //normalizing divisor
+        System.out.print("Normalized Divisor: " + normB + "\n");
 
-        negNormB = negativeOfB(normB);
+        negNormB = negativeOfB(normB); //calculate 2s compliment of divisor
         n = normB.length() - 2;
         maxLeftShifts = n + 1;
         numLeftShifts = 0;
         this.dividend = binDividend;
         this.divisor = binDivisor;
+        
         adjustAQ();
         System.out.println("adjust AQ " + AQ.toString());
         shiftOverZeros();
-        //System.out.println("shiftOverZeros AQ " + AQ.toString());
 
         //loop
         while (numLeftShifts < maxLeftShifts) {
@@ -71,7 +72,7 @@ public class Srt {
         
     }
 
-    StringBuilder binInput(StringBuilder stringBuilder) {
+    StringBuilder binInput(StringBuilder stringBuilder) { //format input
         int i = stringBuilder.indexOf("(");
         String binString = stringBuilder.substring(0, i);
         StringBuilder binSB = new StringBuilder(binString);
@@ -88,7 +89,7 @@ public class Srt {
         return sb.indexOf(findString) > -1;
     }
 
-    StringBuilder HexToBin(StringBuilder hexSB) {
+    StringBuilder HexToBin(StringBuilder hexSB) { //convert Hexadecimal values to binary
         if (contains(hexSB, "(binary)")) {
             return binInput(hexSB);
         } else {
@@ -163,14 +164,13 @@ public class Srt {
         }
     }
 
-    StringBuilder normalize(StringBuilder norm) {
-//        StringBuilder norm = new StringBuilder(divisor);
+    StringBuilder normalize(StringBuilder norm) { //Normalize a binary value
         while (norm.length() >= 2) {
             if (norm.charAt(2) == '0') {
                 norm.deleteCharAt(2);
                 norm.append('0');
                 AQshift++;
-                exTime += 3;
+                exTime += 3; //3 dt for shifting
             } else {
                 return norm;
             }
@@ -178,8 +178,9 @@ public class Srt {
         return norm;
     }
 
-    StringBuilder negativeOfB(StringBuilder num) {
+    StringBuilder negativeOfB(StringBuilder num) { //Calculate the 2s compliment
         StringBuilder neg = new StringBuilder(num);
+        //Calculate 1s compliment
         for (int i = 0; i < num.length(); i++) {
             if (neg.charAt(i) == '0') {
                 neg.setCharAt(i, '1');
@@ -187,8 +188,7 @@ public class Srt {
                 neg.setCharAt(i, '0');
             }
         }
-        //System.out.println("1s complement "+ neg.toString());
-
+        //Calculate 2s compliment
         for (int i = num.length() - 1; i >= 0; i--) {
             if (neg.charAt(i) == '0') {
                 neg.setCharAt(i, '1');
@@ -198,8 +198,7 @@ public class Srt {
                 neg.setCharAt(i, '0');
             }
         }
-        //System.out.println("2s complement"+ neg.toString());
-        exTime += n;
+        exTime += n; //n*dt for 2s compliment operation
         return neg;
     }
 
@@ -215,7 +214,7 @@ public class Srt {
         for (int i = 0; i < AQshift; i++) {
             AQ.deleteCharAt(2);
             AQ.append('*');
-            exTime += 3;
+            exTime += 3; //3 dt for shifting
         }
     }
 
@@ -224,7 +223,7 @@ public class Srt {
             AQ.deleteCharAt(2);
             AQ.append('0');
             numLeftShifts++;
-            exTime += 3;
+            exTime += 3; //3 dt for shifting
             
         }
         System.out.println("Shift Over Zeros " + AQ.toString());
@@ -235,13 +234,13 @@ public class Srt {
             AQ.deleteCharAt(2);
             AQ.append('1');
             numLeftShifts++;
-            exTime += 3;
+            exTime += 3; //3 dt for shifting
         }
         System.out.println("Shift Over Ones " + AQ.toString());
 
     }
 
-    void negative() {
+    void negative() { //Function called when result is negative
         if (numLeftShifts >= maxLeftShifts) {
             return;
         }
@@ -249,7 +248,7 @@ public class Srt {
         AQ.append('0');
         System.out.println("ShL, q0=0 " + AQ.toString());
         numLeftShifts++;
-        exTime += 3;
+        exTime += 3; //3 dt for shifting
         shiftOverOnes();
         if (numLeftShifts >= maxLeftShifts) {
             return;
@@ -263,7 +262,7 @@ public class Srt {
             AQ.append('1');
             System.out.println("ShL, q0=1 " + AQ.toString());
             numLeftShifts++;
-            exTime += 3;
+            exTime += 3; //3 dt for shifting
             return;
         } else { //negative
             System.out.println("Neg result " + AQ.toString());
@@ -280,14 +279,14 @@ public class Srt {
         //if(AQ.charAt(0) == '0')
     }
 
-    void positive() {
+    void positive() { //Function called when result is positive
         if (numLeftShifts >= maxLeftShifts) {
             return;
         }
         AQ.deleteCharAt(2);
         AQ.append('1');
         numLeftShifts++;
-        exTime += 3;
+        exTime += 3; //3 dt for shifting
         System.out.println("ShL, q0=1 " + AQ.toString());
         shiftOverZeros();
     }
@@ -300,11 +299,11 @@ public class Srt {
         return quotient.toString();
     }
     
-    String getRemainder() {
+    String getRemainder() { //Calculate the remainder
         int remPosition;
         StringBuilder remainder = new StringBuilder();
-        if (AQ.charAt(0) == '1' && AQ.charAt(2) == '1') {
-            AQ.insert(2, '1');
+        if (AQ.charAt(0) == '1' && AQ.charAt(2) == '1') { //check if AQ is negative
+            AQ.insert(2, '1'); // Shift right
             System.out.println("ShR " + AQ.substring(0, n+2));
             addB(normB);
             System.out.println("Add B" + normB);
@@ -324,7 +323,7 @@ public class Srt {
         return remainder.toString();
     }
 
-    void addB(StringBuilder b) {
+    void addB(StringBuilder b) { //add or subtract B to A
 
         int carry = 0;
         for (int i = n + 1; i >= 0; i--) {
